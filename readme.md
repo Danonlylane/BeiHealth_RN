@@ -18,7 +18,7 @@
 
 ![](https://tva1.sinaimg.cn/large/e6c9d24egy1h0wnyoa77gj20u00wbad0.jpg)
 
-![image-20220403173312485](/Users/onlybei/Library/Application Support/typora-user-images/image-20220403173312485.png)
+![](https://tva1.sinaimg.cn/large/e6c9d24egy1h0wo0aocg9j21410u0tbs.jpg)
 
 
 
