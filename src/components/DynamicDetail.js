@@ -55,9 +55,8 @@ const DynamicDetail = (props) => {
     key: "DtData"
   })
     .then(result => {
-      // console.log("::::::::::::",result)
       let arr = result.filter((item) => {
-        return item.dtId == props.dtId  //写成了赋值，导致详细中内容不变。
+        return item.dtId == props.dtId 
       })
       console.log("arr---", arr)
       console.log(result);

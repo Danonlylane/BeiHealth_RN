@@ -107,7 +107,6 @@ const InputAuthCore = (props) => {
     useEffect(() => {
         getCode()
         // changeTime(second)
-
         const listener = {
             componentDidAppear: () => {
                 changeTime(second)

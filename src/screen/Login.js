@@ -11,7 +11,6 @@ const { width, height } = Dimensions.get('window');
 const Login = (props) => {
     const [telValue, setTelValue] = useState('');
 
-    
     // 监听输入框的值
     const onChangeText = (v) => {
         setTelValue(v);
@@ -26,7 +25,6 @@ const Login = (props) => {
         if (reg.test(telValue)) {
             // Alert.alert('验证通过')
             // InputAuthCore
-
             // push 方法会有返回键
             Navigation.push(props.componentId, {
                 component: {
@@ -52,15 +50,11 @@ const Login = (props) => {
             //                             fullScreen
             //                         }
             //                     }
-
-
             //                 }
             //             }
             //         ]
             //     }
             // })
-
-
         } else {
             Alert.alert('验证失败', '手机号输入不规范')
         }

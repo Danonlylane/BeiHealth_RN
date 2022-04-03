@@ -20,16 +20,17 @@ const options = {
     path: 'images',
   },
 };
+
 let photosView;
 
 
 const BeiRun = () => {
   const [value, onChangeText] = useState('');
   const [photo, setPhoto] = useState('');
-  let [sayData, setSayData] = useState([]);
+  const [sayData, setSayData] = useState([]);
 
 
-  choosePic = () => {
+  const choosePic = () => {
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -49,7 +50,7 @@ const BeiRun = () => {
   }
 
 
-  let addPic = (url) => {
+  const addPic = (url) => {
     photosView = (
       <View style={styles.row}>
         <View style={styles.flex}>
@@ -57,6 +58,12 @@ const BeiRun = () => {
         </View>
       </View>
     )
+  }
+
+  const deletePic = () => {
+    photosView = null;
+    setPhoto('');
+    Alert.alert('删除成功');
   }
 
   const storageJSON = () => {
@@ -105,31 +112,34 @@ const BeiRun = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.textArea}>想说点什么……</Text>
-      <TextInput
-        style={styles.TextInput}
-        onChangeText={text => onChangeText(text)}
-        value={value}
-        autoFocus={true}
-        multiline={true}
-      />
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <Text style={styles.textArea}>想说点什么……</Text>
+        <TextInput
+          style={styles.TextInput}
+          onChangeText={text => onChangeText(text)}
+          value={value}
+          autoFocus={true}
+          multiline={true}
+        />
 
-      <View style={styles.buttonWrap}>
-        <View style={styles.picContainer}>
-          {photosView}
-        </View>
+        <View style={styles.buttonWrap}>
+          <View style={styles.picContainer}>
+            {photosView}
+          </View>
 
-        <View style={styles.oneLine}>
+          <View style={styles.oneLine}>
 
-          <TouchableHighlight
-            style={styles.buttonChoosePlus}
-            activeOpacity={0.8}
-            onPress={() => choosePic()}>
-            {/* <View>
+            <TouchableHighlight
+              style={styles.buttonChoosePlus}
+              activeOpacity={0.8}
+              onPress={() => choosePic()}>
+              {/* <View>
               <Text>选取照片</Text>
             </View> */}
-            <Icon name='plus' style={styles.iconPlus} size={20}></Icon>
-          </TouchableHighlight>
+              <Icon name='plus' style={styles.iconPlus} size={20}></Icon>
+            </TouchableHighlight>
+          </View>
+
         </View>
 
         <View style={styles.buttonWrap1}>
@@ -152,19 +162,8 @@ const BeiRun = () => {
             </View>
           </TouchableHighlight>
 
-          <TouchableHighlight
-            style={styles.button}
-            underlayColor='#F27600'
-            activeOpacity={0.8}
-            onPress={() => storageGet()}>
-            <View>
-              <Text>look</Text>
-            </View>
-          </TouchableHighlight>
         </View>
-
-
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -188,9 +187,13 @@ const styles = StyleSheet.create({
     flex: 1,
     // backgroundColor: "#F2F2F2",
   },
-  picContainer: {
-    alignItems: 'center',
+  scrollContainer: {
+    flex: 1,
   },
+  picContainer: {
+    alignItems: 'flex-start',
+  },
+
   image: {
     height: 120,
     width: 120,
@@ -215,7 +218,9 @@ const styles = StyleSheet.create({
   },
   buttonWrap: {
     flex: 1,
-    // justifyContent: 'center',
+    justifyContent: 'flex-start',
+    // justifyContent: 'flex-end',
+
     alignItems: 'center',
   },
   buttonWrap1: {

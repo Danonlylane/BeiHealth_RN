@@ -1,4 +1,7 @@
-import { StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Linking, Alert, SafeAreaView } from 'react-native'
+import {
+  StyleSheet, Text, View, TextInput, Button, TouchableHighlight, Linking,
+  Alert, SafeAreaView, Keyboard, ScrollView
+} from 'react-native'
 import React, { useState } from 'react'
 
 import storage from '../constants/storage'
@@ -73,8 +76,7 @@ const BeiHealth = (props) => {
         { text: "确认", onPress: () => clearKeyAll() }
       ]
     );
-
-    
+  // 读取数据
   const storageGet = () => {
     storage.load({
       key: 'healthData',
@@ -85,9 +87,7 @@ const BeiHealth = (props) => {
       console.log(err);
     })
   }
-
-
-
+  // 计算
   const calc = (weight, valueA, valueB) => {
     let numWeight = Number(weight);
     let numValueA = Number(valueA);
@@ -110,91 +110,96 @@ const BeiHealth = (props) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.textArea}>您的体重/千克</Text>
-      <TextInput
-        style={styles.TextInput}
-        onChangeText={text => setWeight(text)}
-        value={weight}
-        autoFocus={true}
-        multiline={true}
-      />
-      <Text style={styles.textArea}>今日摄入热量/千焦</Text>
-      <TextInput
-        style={styles.TextInput}
-        onChangeText={text => setValueA(text)}
-        value={valueA}
-        autoFocus={false}
-        multiline={true}
-      />
-      <Text style={styles.textArea}>运动消耗热量/千焦</Text>
-      <TextInput
-        style={styles.TextInput}
-        onChangeText={text => setValueB(text)}
-        value={valueB}
-        autoFocus={false}
-        multiline={true}
-      />
+      <ScrollView>
+        <Text style={styles.textArea}>您的体重/千克</Text>
+        <TextInput
+          keyboardType='numeric'
+          style={styles.TextInput}
+          onChangeText={text => setWeight(text)}
+          value={weight}
+          autoFocus={true}
+          multiline={true}
+        />
+        <Text style={styles.textArea}>今日摄入热量/千焦</Text>
+        <TextInput
+          keyboardType='numeric'
+          style={styles.TextInput}
+          onChangeText={text => setValueA(text)}
+          value={valueA}
+          autoFocus={false}
+          multiline={true}
+        />
+        <Text style={styles.textArea}>运动消耗热量/千焦</Text>
+        <TextInput
+          keyboardType='numeric'
+          style={styles.TextInput}
+          onChangeText={text => setValueB(text)}
+          value={valueB}
+          autoFocus={false}
+          multiline={true}
+        />
 
-      <View>
-        <Text style={styles.congraText}>恭喜你</Text>
-        <Text style={styles.textAreaLine}>
-          今天大约 <Text style={styles.textAreaNum}>{fatAddorDec}</Text> 脂肪 <Text style={styles.textAreaNum}>{fat}</Text> 克</Text>
-      </View>
+        <View>
+          <Text style={styles.congraText}>恭喜你</Text>
+          <Text style={styles.textAreaLine}>
+            今天大约 <Text style={styles.textAreaNum}>{fatAddorDec}</Text> 脂肪 <Text style={styles.textAreaNum}>{fat}</Text> 克</Text>
+        </View>
 
-      <View style={styles.buttonWrap}>
-        <TouchableHighlight
-          style={styles.button}
-          // underlayColor='#F27600'
-          activeOpacity={0.8}
-          onPress={() => calc(weight, valueA, valueB)}>
-          <View>
-            <Text>计算</Text>
-          </View>
-        </TouchableHighlight>
+        <View style={styles.buttonWrap}>
+          <TouchableHighlight
+            style={styles.button}
+            // underlayColor='#F27600'
+            activeOpacity={0.8}
+            onPress={() => calc(weight, valueA, valueB)}>
+            <View>
+              <Text>计算</Text>
+            </View>
+          </TouchableHighlight>
 
-        <TouchableHighlight
-          style={styles.button}
-          underlayColor='#F27600'
-          activeOpacity={0.8}
-          onPress={() => storageSave()}>
-          <View>
-            <Text>保存</Text>
-          </View>
-        </TouchableHighlight>
-      </View>
+          <TouchableHighlight
+            style={styles.button}
+            underlayColor='#F27600'
+            activeOpacity={0.8}
+            onPress={() => storageSave()}>
+            <View>
+              <Text>保存</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
 
-      <View style={styles.buttonWrap1}>
-        <TouchableHighlight
-          style={styles.button1}
-          underlayColor='#F27600'
-          activeOpacity={0.8}
-          onPress={() => goHealthData()}>
-          <View>
-            <Text>查看历史记录</Text>
-          </View>
-        </TouchableHighlight>
+        <View style={styles.buttonWrap1}>
+          <TouchableHighlight
+            style={styles.button1}
+            underlayColor='#F27600'
+            activeOpacity={0.8}
+            onPress={() => goHealthData()}>
+            <View>
+              <Text>查看历史记录</Text>
+            </View>
+          </TouchableHighlight>
 
-        <TouchableHighlight
-          style={styles.button1}
-          underlayColor='#F27600'
-          activeOpacity={0.8}
-          onPress={() => createTwoButtonAlert()}>
-          <View>
-            <Text>清除历史记录</Text>
-          </View>
-        </TouchableHighlight>
-      </View>
+          <TouchableHighlight
+            style={styles.button1}
+            underlayColor='#F27600'
+            activeOpacity={0.8}
+            onPress={() => createTwoButtonAlert()}>
+            <View>
+              <Text>清除历史记录</Text>
+            </View>
+          </TouchableHighlight>
+        </View>
 
 
-      <View>
-        <Button
-          title="点此查看食物热量大全表"
-          style={styles.button}
-          onPress={() => { Linking.openURL('https://zhuanlan.zhihu.com/p/88410529') }}>
-        </Button>
-      </View>
-      <Text style={styles.textAreaButton}>计算方法：热量缺口 = 摄入热量 - 静息代谢- 食物热效应 - 行为代谢
-      </Text>
+        <View>
+          <Button
+            title="点此查看食物热量大全表"
+            style={styles.button}
+            onPress={() => { Linking.openURL('https://zhuanlan.zhihu.com/p/88410529') }}>
+          </Button>
+        </View>
+        <Text style={styles.textAreaButton}>计算方法：热量缺口 = 摄入热量 - 静息代谢- 食物热效应 - 行为代谢
+        </Text>
+      </ScrollView>
     </SafeAreaView>
 
   )
