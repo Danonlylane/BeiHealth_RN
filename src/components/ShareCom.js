@@ -32,7 +32,7 @@ const ShareCom = () => {
         console.log('IOS分享失败')
       }
     }).catch(err => {
-      console.log("err:", err)
+      // console.log("err:", err)
     })
   }
 

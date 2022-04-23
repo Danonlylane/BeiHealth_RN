@@ -6,8 +6,8 @@ import IconAntd from 'react-native-vector-icons/AntDesign'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import storage from '../constants/storage'
-
-
+import { deleteHealthData } from './BeiHealth'
+import { deleteSayData } from '../screen/BeiRun'
 
 const My = (props) => {
     const goHealthData = () => {
@@ -30,10 +30,15 @@ const My = (props) => {
 
     const clearKeyAllHealth = () => {
         storage.remove({ key: 'healthData' });
+        deleteHealthData();
+        // storage.clearMapForKey({ key: 'healthData' });
+        // storage.clearMap();
     }
 
     const clearKeyAllSay = () => {
+        // storage.clearMapForKey({ key: 'sayData' });
         storage.remove({ key: 'sayData' });
+        deleteSayData();
     }
 
     const createTwoButtonAlertHealth = () =>

@@ -17,6 +17,7 @@ import {
 } from 'react-native-confirmation-code-field';
 
 const { width, height } = Dimensions.get('window');
+
 // 验证码页面
 const InputAuthCore = (props) => {
     const CELL_COUNT = 4
@@ -44,7 +45,6 @@ const InputAuthCore = (props) => {
             return text
         })
         // console.log(value.length)
-        // if()
     }
     // 提交请求：手机号码 + 验证码  
     const submitHandler = () => {
@@ -123,6 +123,7 @@ const InputAuthCore = (props) => {
         }
 
     }, []);
+    
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../assets/tmp1.jpg')} style={styles.bgImg}>

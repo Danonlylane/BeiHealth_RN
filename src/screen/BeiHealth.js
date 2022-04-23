@@ -11,6 +11,11 @@ import { Navigation } from 'react-native-navigation'
 let fat = 0;
 let fatAddorDec = '减少';
 let healthData = [];
+
+const deleteHealthData = () => {
+  healthData = [];
+}
+
 const BeiHealth = (props) => {
   const [weight, setWeight] = useState('');
 
@@ -30,7 +35,6 @@ const BeiHealth = (props) => {
     })
   }
 
-
   const storageJSON = () => {
     let fatMessage = fatAddorDec + fat.toString() + '克脂肪';
     let time = new Date();
@@ -46,7 +50,6 @@ const BeiHealth = (props) => {
     return obj;
   }
 
-
   const storageSave = () => {
     let res = storageJSON();
     let resJSON = JSON.stringify(res);
@@ -57,13 +60,15 @@ const BeiHealth = (props) => {
     }).catch((err) => {
       console.log(err);
     })
+    Alert.alert('保存成功！')
   }
 
   const clearKeyAll = () => {
     storage.remove({ key: 'healthData' }).catch(err => { console.log(err); });
+    healthData = [];
   }
 
-  const createTwoButtonAlert = () =>
+  const createTwoButtonAlert = () => {
     Alert.alert(
       "确认",
       "确定删除所有健康数据",
@@ -76,6 +81,8 @@ const BeiHealth = (props) => {
         { text: "确认", onPress: () => clearKeyAll() }
       ]
     );
+  }
+
   // 读取数据
   const storageGet = () => {
     storage.load({
@@ -84,9 +91,10 @@ const BeiHealth = (props) => {
 
       console.log(res);
     }).catch((err) => {
-      console.log(err);
+      // console.log(err);
     })
   }
+
   // 计算
   const calc = (weight, valueA, valueB) => {
     let numWeight = Number(weight);
@@ -148,7 +156,7 @@ const BeiHealth = (props) => {
         <View style={styles.buttonWrap}>
           <TouchableHighlight
             style={styles.button}
-            // underlayColor='#F27600'
+            underlayColor='gray'
             activeOpacity={0.8}
             onPress={() => calc(weight, valueA, valueB)}>
             <View>
@@ -158,7 +166,7 @@ const BeiHealth = (props) => {
 
           <TouchableHighlight
             style={styles.button}
-            underlayColor='#F27600'
+            underlayColor='gray'
             activeOpacity={0.8}
             onPress={() => storageSave()}>
             <View>
@@ -170,7 +178,7 @@ const BeiHealth = (props) => {
         <View style={styles.buttonWrap1}>
           <TouchableHighlight
             style={styles.button1}
-            underlayColor='#F27600'
+            underlayColor='gray'
             activeOpacity={0.8}
             onPress={() => goHealthData()}>
             <View>
@@ -180,7 +188,7 @@ const BeiHealth = (props) => {
 
           <TouchableHighlight
             style={styles.button1}
-            underlayColor='#F27600'
+            underlayColor='gray'
             activeOpacity={0.8}
             onPress={() => createTwoButtonAlert()}>
             <View>
@@ -206,6 +214,9 @@ const BeiHealth = (props) => {
 }
 
 export default BeiHealth
+export {
+  deleteHealthData
+}
 
 BeiHealth.options = {
   topBar: {
@@ -259,10 +270,12 @@ const styles = StyleSheet.create({
   TextInput: {
     marginTop: 10,
     marginHorizontal: 10,
-    paddingLeft: 5,
+    paddingLeft: 10,
     paddingVertical: 5,
     borderColor: 'gray',
     borderWidth: 0.5,
+    borderRadius: 5,
+    backgroundColor: '#efeff1'
   },
   buttonWrap: {
     flex: 1,
@@ -271,22 +284,23 @@ const styles = StyleSheet.create({
   },
   buttonWrap1: {
     flex: 1,
-    marginTop: 80,
+    marginTop: 100,
     // justifyContent: 'center',
     alignItems: 'center',
   },
   button: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'lightblue',
     paddingVertical: 10,
     paddingHorizontal: 50,
     borderRadius: 25,
     marginTop: 20,
   },
   button1: {
-    backgroundColor: 'lightgreen',
+    backgroundColor: 'lightgray',
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 25,
-    marginTop: 20,
+    marginTop: 10,
+    marginBottom: 15,
   }
 })

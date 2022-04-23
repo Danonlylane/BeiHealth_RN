@@ -63,8 +63,9 @@ const DynamicDetail = (props) => {
       arr.length !== 0 && setUserInfo(arr[0])
     })
     .catch(err => {
-      console.log(err)
+      // console.log(err)
     })
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>

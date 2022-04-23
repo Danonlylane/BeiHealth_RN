@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View, SafeAreaView, FlatList, Button, ScrollView, Alert } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, FlatList, Button, ScrollView, Alert, Image } from 'react-native'
 import React, { useState, useEffect } from 'react'
 
 import storage from '../constants/storage'
+
 
 const DataDetail = (props) => {
     const { itemObj } = props;
@@ -10,12 +11,27 @@ const DataDetail = (props) => {
             <View style={styles.textContainer}>
                 <View><Text style={styles.textLeft}>时间：{itemObj.time}</Text></View>
                 <View><Text style={styles.textLeft}>动态：{itemObj.detail}</Text></View>
+                <View style={styles.picContainer}>
+                    {
+                        itemObj.photos.map(item => {
+                            return (
+                                <View style={styles.picContainer} key={item}>
+                                    <View style={styles.flex}>
+                                        <Image style={styles.image} source={{ uri: item }} />
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
+                </View>
             </View>
             <View style={styles.divi}></View>
         </View>
 
     )
 }
+
+
 
 // 主展示页面
 const HistoryDataShow = (props) => {
@@ -28,13 +44,15 @@ const HistoryDataShow = (props) => {
         // data = JSON.parse(res);
         data = res;
         setData(data);
+        console.log(data);
         // setData([...data]); // 此做法会引起不断重复渲染
         // setData1(data1 + 1);
         // console.log('data: ', data);
         // console.log('data1: ', data1);
         // console.log(data instanceof Array);
+        console.log(data)
     }).catch(err => {
-        console.log(err);
+        // console.log(err);
     })
 
     return (
@@ -78,6 +96,7 @@ const styles = StyleSheet.create({
     textContainer: {
         // paddingHorizontal: 15,
         // paddingVertical: 6,
+        flex: 1,
         marginHorizontal: 15,
         marginVertical: 6,
         backgroundColor: '#f3f3f3',
@@ -87,5 +106,18 @@ const styles = StyleSheet.create({
     },
     textRight: {
         fontSize: 13,
+    },
+    image: {
+        height: 100,
+        width: 100,
+        marginTop: 5,
+        marginLeft: 5,
+        marginRight: 5,
+        borderWidth: 1,
+        borderColor: '#ddd'
+    },
+    picContainer: {
+        alignItems: 'flex-start',
+        flexDirection: 'row'
     }
 })

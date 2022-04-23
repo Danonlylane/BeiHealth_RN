@@ -21,16 +21,30 @@ const options = {
   },
 };
 
-let photosView;
+// let photosView ;
+let photosView = [];
+let photosUrl = [];
+let sayData = [];
 
+
+const deleteSayData = () => {
+  sayData = [];
+}
 
 const BeiRun = () => {
-  const [value, onChangeText] = useState('');
-  const [photo, setPhoto] = useState('');
-  const [sayData, setSayData] = useState([]);
+  let [value, onChangeText] = useState('');
+
+  // const [photo, setPhoto] = useState('');
+  let [photo, setPhoto] = useState([]);
+
+  // let [sayData, setSayData] = useState([]);
 
 
   const choosePic = () => {
+    if (photosView.length >= 3) {
+      Alert.alert('最多添加三张照片');
+      return;
+    }
     launchImageLibrary(options, (response) => {
       if (response.didCancel) {
         console.log('User cancelled image picker');
@@ -39,10 +53,8 @@ const BeiRun = () => {
       } else if (response.customButton) {
         Alert.alert('自定义按钮:' + response.customButton)
       } else {
-        // console.log('Response = ', response);
         const source = { uri: response.assets[0].uri };
         const url = response.assets[0].uri;
-        Alert.alert('成功添加')
         addPic(url);
         setPhoto(source);
       }
@@ -50,9 +62,20 @@ const BeiRun = () => {
   }
 
 
+  // const addPic = (url) => {
+  //   photosView = (
+  //     <View style={styles.row}>
+  //       <View style={styles.flex}>
+  //         <Image style={styles.image} source={{ uri: url }} />
+  //       </View>
+  //     </View>
+  //   )
+  // }
+
   const addPic = (url) => {
-    photosView = (
-      <View style={styles.row}>
+    photosUrl.push(url);
+    photosView.push(
+      <View style={styles.row} key={url}>
         <View style={styles.flex}>
           <Image style={styles.image} source={{ uri: url }} />
         </View>
@@ -61,9 +84,25 @@ const BeiRun = () => {
   }
 
   const deletePic = () => {
-    photosView = null;
+    // photosView = null;
+    photosView = [];
     setPhoto('');
     Alert.alert('删除成功');
+  }
+
+  const deletePicAlert = () => {
+    Alert.alert(
+      "确认",
+      "确定删除所有健康数据",
+      [
+        {
+          text: "取消",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "确认", onPress: () => deletePic() }
+      ]
+    );
   }
 
   const storageJSON = () => {
@@ -78,9 +117,9 @@ const BeiRun = () => {
     timeFlag += time.getSeconds() + '秒';
     obj['time'] = timeFlag;
     obj['detail'] = sayMessage;
+    obj['photos'] = photosUrl;
     return obj;
   }
-
 
   const storageSave = () => {
     let res = storageJSON();
@@ -92,6 +131,10 @@ const BeiRun = () => {
     }).catch((err) => {
       console.log(err);
     })
+    onChangeText('');
+    photosView = [];
+    photosUrl = [];
+    Alert.alert('保存成功');
   }
 
   const clearKeyAll = () => {
@@ -102,10 +145,9 @@ const BeiRun = () => {
     storage.load({
       key: 'sayData',
     }).then(res => {
-
       console.log(res);
     }).catch((err) => {
-      console.log(err);
+      // console.log(err);
     })
   }
 
@@ -113,7 +155,7 @@ const BeiRun = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <Text style={styles.textArea}>想说点什么……</Text>
+        <Text style={styles.textArea}>想说点什么/分享想法……</Text>
         <TextInput
           style={styles.TextInput}
           onChangeText={text => onChangeText(text)}
@@ -123,6 +165,7 @@ const BeiRun = () => {
         />
 
         <View style={styles.buttonWrap}>
+
           <View style={styles.picContainer}>
             {photosView}
           </View>
@@ -145,16 +188,17 @@ const BeiRun = () => {
         <View style={styles.buttonWrap1}>
           <TouchableHighlight
             style={styles.buttonDelete}
+            underlayColor='green'
             activeOpacity={0.8}
-            onPress={() => deletePic()}>
+            onPress={() => deletePicAlert()}>
             <View>
               <Text>删除照片</Text>
             </View>
           </TouchableHighlight>
 
           <TouchableHighlight
-            style={styles.button}
-            underlayColor='#F27600'
+            style={styles.buttonSave}
+            underlayColor='green'
             activeOpacity={0.8}
             onPress={() => storageSave()}>
             <View>
@@ -169,6 +213,10 @@ const BeiRun = () => {
 }
 
 export default BeiRun
+
+export {
+  deleteSayData
+}
 
 BeiRun.options = {
   topBar: {
@@ -192,6 +240,7 @@ const styles = StyleSheet.create({
   },
   picContainer: {
     alignItems: 'flex-start',
+    flexDirection: 'row',
   },
 
   image: {
@@ -211,10 +260,12 @@ const styles = StyleSheet.create({
   TextInput: {
     marginTop: 10,
     marginHorizontal: 10,
-    paddingLeft: 5,
+    paddingLeft: 10,
     paddingVertical: 5,
     borderColor: 'gray',
     borderWidth: 0.5,
+    borderRadius: 5,
+    backgroundColor: '#efeff1'
   },
   buttonWrap: {
     flex: 1,
@@ -229,8 +280,8 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'center',
   },
-  button: {
-    backgroundColor: 'lightgreen',
+  buttonSave: {
+    backgroundColor: 'lightblue',
     paddingVertical: 10,
     paddingHorizontal: 50,
     borderRadius: 25,

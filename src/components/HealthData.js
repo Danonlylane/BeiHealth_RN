@@ -29,6 +29,7 @@ const HealthDataShow = (props) => {
         // data = JSON.parse(res);
         data = res;
         setData(data);
+        console.log(data);
         // setData([...data]); // 此做法会引起不断重复渲染
         // setData1(data1 + 1);
         // console.log('data: ', data);
